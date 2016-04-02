@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Hexo初见 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="Hexo的源起、环境、安装、本地服务器及其Github服务器配置">
+  
+  <meta name="description" content="Hexo的源起、环境、安装、本地服务器及其Github服务器配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo初见">
+<meta property="og:url" content="http://bravesnow.com/2014/04/26/hexo初见/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="Hexo的源起、环境、安装、本地服务器及其Github服务器配置">
+<meta property="og:updated_time" content="2014-11-03T12:49:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo初见">
+<meta name="twitter:description" content="Hexo的源起、环境、安装、本地服务器及其Github服务器配置">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/04/26/hexo初见/">
+  <time datetime="2014-04-26T04:46:53.000Z">
+    4月 26 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">Hexo初见</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>Hexo的源起、环境、安装、本地服务器及其Github服务器配置<br><a id="more"></a></p>
+<h1 id="源起"><a href="#源起" class="headerlink" title="源起"></a>源起</h1><hr>
+<p>一直想要找个平台，记录一下自己学习的技术心得。调研了几个大的IT平台，有csdn，博客园等。也注册了帐号，可总是没有写下去的欲望。</p>
+<p>后来，学习了Git，自然用了Github，实在很是喜欢。偶然间，看到了Github Pages，以及使用Jekyll搭建博客平台，本来这种方式很符合我的口味，无奈，太过于繁琐，而我又没有这么多的时间，而且还依赖于ruby环境，于是萌生放弃。</p>
+<p>直到在知乎上，看到了Zippera的答案，浏览了他的博客，知道了Hexo，才重新着手Github博客搭建。</p>
+<hr>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><hr>
+<ul>
+<li>Windows7</li>
+<li>Git(msysgit)</li>
+<li>Node.js</li>
+<li>Hexo</li>
+</ul>
+<hr>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><hr>
+<ul>
+<li><strong>Node.js install</strong><br><a href="http://nodejs.org/" target="_blank" rel="external">Node.js download</a><br>Windows下直接安装</li>
+<li><strong>Hexo install</strong><br><code>npm install -g hexo</code></li>
+</ul>
+<hr>
+<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><hr>
+<ul>
+<li><p><strong>切换到目标初始化</strong><br>该命令会自动在目标下，建立所需要的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>提交到Hexo</strong><br>每次文件变化，都要提交一次</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动本地服务器</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>博客预览</strong></p>
+<ul>
+<li><a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></li>
+<li><a href="http://127.0.0.1:4000" target="_blank" rel="external">http://127.0.0.1:4000</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="Github托管"><a href="#Github托管" class="headerlink" title="Github托管"></a>Github托管</h1><hr>
+<ul>
+<li><strong>Github帐号</strong><br>如：帐号<a href="https://github.com/bravesnow" target="_blank" rel="external">https://github.com/bravesnow</a></li>
+<li><strong>Repository仓库</strong><br>仓库名<code>bravesnow.github.com/io</code></li>
+<li><p><strong>Hexo设置</strong><br>初始的文件夹中<code>_config.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: github</span><br><span class="line">repository: https://github.com/bravesnow/bravesnow.github.com.git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>提交Github</strong><br>在目标目录中执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>博客主页</strong><br><a href="http://bravesnow.github.io/" target="_blank" rel="external">http://bravesnow.github.io/</a></p>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://zipperary.com/2013/05/28/hexo-guide-1/" target="_blank" rel="external">Zippera’s blog</a></li>
+<li><a href="http://ibruce.info/2013/11/22/hexo-your-blog/" target="_blank" rel="external">不如的博客</a></li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/hexo/">hexo</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

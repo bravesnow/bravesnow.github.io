@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>标准C下的面向对象技术 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="我们知道C语言是面向过程的，其自有其的优点，但是面向对象中的特性，对程序的设计有很大的帮助。那么在C中是否可以使用面向对象特性呢？答案是肯定的。具体是如何实现的呢？本文简要介绍。面向对象最显著的特性是，数据和操作组合成一起，在C中我们使用结构体和函数指针替代。">
+  
+  <meta name="description" content="我们知道C语言是面向过程的，其自有其的优点，但是面向对象中的特性，对程序的设计有很大的帮助。那么在C中是否可以使用面向对象特性呢？答案是肯定的。具体是如何实现的呢？本文简要介绍。面向对象最显著的特性是，数据和操作组合成一起，在C中我们使用结构体和函数指针替代。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准C下的面向对象技术">
+<meta property="og:url" content="http://bravesnow.com/2014/11/06/标准C下的面向对象技术/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="我们知道C语言是面向过程的，其自有其的优点，但是面向对象中的特性，对程序的设计有很大的帮助。那么在C中是否可以使用面向对象特性呢？答案是肯定的。具体是如何实现的呢？本文简要介绍。面向对象最显著的特性是，数据和操作组合成一起，在C中我们使用结构体和函数指针替代。">
+<meta property="og:updated_time" content="2014-11-06T10:00:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准C下的面向对象技术">
+<meta name="twitter:description" content="我们知道C语言是面向过程的，其自有其的优点，但是面向对象中的特性，对程序的设计有很大的帮助。那么在C中是否可以使用面向对象特性呢？答案是肯定的。具体是如何实现的呢？本文简要介绍。面向对象最显著的特性是，数据和操作组合成一起，在C中我们使用结构体和函数指针替代。">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/06/标准C下的面向对象技术/">
+  <time datetime="2014-11-06T09:51:59.000Z">
+    11月 6 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">标准C下的面向对象技术</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>我们知道C语言是面向过程的，其自有其的优点，但是面向对象中的特性，对程序的设计有很大的帮助。<br>那么在C中是否可以使用面向对象特性呢？答案是肯定的。具体是如何实现的呢？本文简要介绍。<br>面向对象最显著的特性是，数据和操作组合成一起，在C中我们使用结构体和函数指针替代。<br><a id="more"></a><br><strong>函数指针</strong><br>指针是一个数据类型，函数运行的入口就是一个地址，如果用存入指针中。<br>在这个指针为函数指针。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*ptr_fun)(<span class="keyword">int</span>,<span class="keyword">int</span>);<span class="comment">//定义函数指针</span></span><br><span class="line"><span class="comment">/* 定义一个函数 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    ;<span class="comment">//some code</span></span><br><span class="line">&#125;</span><br><span class="line">ptr_fun = foo;<span class="comment">//函数指针赋值</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>数据封装</strong><br>在C中，我们可以使用结构体将几个基本数据封装成一个对象。<br>比如：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> object &#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">double</span> b;</span><br><span class="line">    <span class="keyword">char</span> *p;</span><br><span class="line">    <span class="keyword">void</span> (*ptr_fun)(<span class="keyword">int</span>,<span class="keyword">int</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这样这个对象包含了数据与操作。</p>
+<p><strong>关于结构体下的几个宏</strong></p>
+<ul>
+<li><p>获取结构体成员的偏移量<br>offsetof(struct_type, struct_member);<br>含义是当结构体变量的地址是0时，成员member的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> A&#123;</span><br><span class="line">     <span class="keyword">int</span> a;</span><br><span class="line">     <span class="keyword">char</span> *p;</span><br><span class="line">     <span class="keyword">double</span> d;</span><br><span class="line">&#125; A;</span><br><span class="line">offsetof(A, a); <span class="comment">// -&gt; 0</span></span><br><span class="line">offsetof(A, p); <span class="comment">// -&gt; 4</span></span><br><span class="line">offsetof(A, d); <span class="comment">// -&gt; 8</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>成员指针获得结构体指针</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> get_struct_ptr(m_p, s, m) (s*)((char*)m_p-offsetof(s, m))</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/C/">C</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>python技巧 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="列表推导式、迭代器、便捷函数">
+  
+  <meta name="description" content="列表推导式、迭代器、便捷函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python技巧">
+<meta property="og:url" content="http://bravesnow.com/2014/07/24/python技巧/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="列表推导式、迭代器、便捷函数">
+<meta property="og:updated_time" content="2014-07-29T00:46:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python技巧">
+<meta name="twitter:description" content="列表推导式、迭代器、便捷函数">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/07/24/python技巧/">
+  <time datetime="2014-07-24T11:27:44.000Z">
+    7月 24 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">python技巧</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>列表推导式、迭代器、便捷函数<br><a id="more"></a></p>
+<h1 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h1><p>列表是Python中最重要的数据结构，对列表的处理也有许多函数。<br>但是最pythonic的操作一定是列表推导式，也是一种轻量级的循环。<br>先直观的来看：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>]</span><br><span class="line">b = [<span class="number">2</span>*e <span class="keyword">for</span> e <span class="keyword">in</span> a]<span class="comment">#=&gt;[2, 6, 10, 14, 18]</span></span><br></pre></td></tr></table></figure></p>
+<p>更高级的是，可以在for中，过滤元素，如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>]</span><br><span class="line">b = [<span class="number">2</span>*e <span class="keyword">for</span> e <span class="keyword">in</span> a <span class="keyword">if</span> e%<span class="number">2</span>]<span class="comment">#满足if的才运算</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><p>我们知道在写程序的时候，有时候一些重复或类似的代码。<br>由于量很小，不值得写一个函数，而且函数调用开销也降低了效率。<br>python提供了匿名函数的定义，非常方便。<br>关键字<code>lambda</code><br>形式如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fun = <span class="keyword">lambda</span> a,b : a+b</span><br><span class="line"><span class="keyword">print</span> fun(<span class="number">3</span>,<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<p>定义一个接受两个参数，返回之和的函数。<br>值得注意的是，函数体只是一个语句，必须能够返回值。<br>如果是函数调用必须有return语句。而像if,for,print是不能用于匿名函数体。</p>
+<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><h1 id="便捷函数"><a href="#便捷函数" class="headerlink" title="便捷函数"></a>便捷函数</h1><ul>
+<li><p>enumerate</p>
+</li>
+<li><p>map,filter</p>
+</li>
+</ul>
+<p>-</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/python/">python</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

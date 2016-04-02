@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>标准C泛型下的排序算法 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="排序是数据结构与算法中，最基本的算法，也是应用广泛的算法。我们从书本上学到的多是对于一个整型数组的排序，虽然能够了解清楚排序的基本原理。但是我们不能保证以后都是整型的排序。本文试图使用之前讲述的泛型方法，给出一个通用类型的排序算法。">
+  
+  <meta name="description" content="排序是数据结构与算法中，最基本的算法，也是应用广泛的算法。我们从书本上学到的多是对于一个整型数组的排序，虽然能够了解清楚排序的基本原理。但是我们不能保证以后都是整型的排序。本文试图使用之前讲述的泛型方法，给出一个通用类型的排序算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准C泛型下的排序算法">
+<meta property="og:url" content="http://bravesnow.com/2014/11/06/标准C泛型下的排序算法/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="排序是数据结构与算法中，最基本的算法，也是应用广泛的算法。我们从书本上学到的多是对于一个整型数组的排序，虽然能够了解清楚排序的基本原理。但是我们不能保证以后都是整型的排序。本文试图使用之前讲述的泛型方法，给出一个通用类型的排序算法。">
+<meta property="og:updated_time" content="2014-11-06T10:00:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准C泛型下的排序算法">
+<meta name="twitter:description" content="排序是数据结构与算法中，最基本的算法，也是应用广泛的算法。我们从书本上学到的多是对于一个整型数组的排序，虽然能够了解清楚排序的基本原理。但是我们不能保证以后都是整型的排序。本文试图使用之前讲述的泛型方法，给出一个通用类型的排序算法。">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/06/标准C泛型下的排序算法/">
+  <time datetime="2014-11-06T09:54:24.000Z">
+    11月 6 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">标准C泛型下的排序算法</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>排序是数据结构与算法中，最基本的算法，也是应用广泛的算法。<br>我们从书本上学到的多是对于一个整型数组的排序，虽然能够了解清楚排序的基本原理。<br>但是我们不能保证以后都是整型的排序。本文试图使用之前讲述的泛型方法，给出一个通用类型的排序算法。<br><a id="more"></a><br><strong>基本问题</strong><br>我们使用的是基于比较的算法，那么程序中必有数据比较以及交换。不同类型的数据有不同的比较方法。<br>因此，本算法的数据比较使用一个通用比较函数。而所谓交换可以使用内存交换。<br>传递的参数使用void *指针。</p>
+<p><strong>函数原型</strong><br>参数：起始地址，终止地址，数据长度，比较函数<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void sort(void *start, void *end, size_t width, int (*comp)(void*,void*))</span><br></pre></td></tr></table></figure></p>
+<p><strong>比较函数</strong><br>函数传入的两个指针，对不同的类型有不同的函数体。<br>不同函数返回值的含义是一致的：<br>大于零：前者大于后者。<br>等于零：前者等于后者。<br>小于零：前者小于后者。<br>下面是整型的比较函数：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">void</span> *first, <span class="keyword">void</span> *second)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> *(<span class="keyword">int</span> *)first - *(<span class="keyword">int</span> *)second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>交换函数</strong><br>这个函数是对内存交换，所以所有的类型是一致的。<br>参数是，两个数据指针，以及数据长度。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">void</span> *first, <span class="keyword">void</span> *second, size_t width)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">     <span class="keyword">char</span> *f = (<span class="keyword">char</span> *)first;</span><br><span class="line">     <span class="keyword">char</span> *s = (<span class="keyword">char</span> *)second;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; width; ++i, ++f, ++s)&#123;</span><br><span class="line">        <span class="keyword">char</span> temp = *f;</span><br><span class="line">        *f = *s;</span><br><span class="line">        *s = temp;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>简单插入排序</strong><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* insert sort */</span> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort_insert_int</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">	<span class="keyword">int</span> key = A[i];</span><br><span class="line">	<span class="keyword">int</span> j = i<span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; key &lt; A[j]) &#123;</span><br><span class="line">	    A[j+<span class="number">1</span>] = A[j];</span><br><span class="line">	    --j;</span><br><span class="line">	&#125;</span><br><span class="line">	A[j+<span class="number">1</span>] = key;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/* 插入排序 */ </span><br><span class="line">void sort_insert(void *low, void *high, size_t width,</span><br><span class="line">		 int (*comp)(const void*, const void*))</span><br><span class="line">&#123;</span><br><span class="line">     void *cur, *key, *ptr;</span><br><span class="line">     for (cur = low+width; cur &lt;= high; cur += width) &#123;</span><br><span class="line">	  key = cur;</span><br><span class="line">	  for (ptr = cur-width; ptr &gt;= low; ptr -= width) &#123;</span><br><span class="line">	       if (comp(key, ptr) &lt; 0) &#123;</span><br><span class="line">		    exchange(key, ptr, width);</span><br><span class="line">		    key = ptr;</span><br><span class="line">	       &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/c-sort/">c sort</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

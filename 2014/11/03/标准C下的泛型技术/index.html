@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>标准C下的泛型技术 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="所谓泛型，就是与类型无关。现在许多的流行语言都是强类型（不同类型通常不能相互操作），比如C、C++、Java等。这样的好处就是一些错误可以在编译的时候检测出来。但是，对于多种类型功能类似的函数，需要写多个类型对应的版本。在C++、Java都有相对应的技术，可以把类型作为参数传入函数。而C是一门古老的语言，并没有相对应的技术。但是C中有一个指针类型，存储变量的地址。这个地址对所有的类型是通用的。因此">
+  
+  <meta name="description" content="所谓泛型，就是与类型无关。现在许多的流行语言都是强类型（不同类型通常不能相互操作），比如C、C++、Java等。这样的好处就是一些错误可以在编译的时候检测出来。但是，对于多种类型功能类似的函数，需要写多个类型对应的版本。在C++、Java都有相对应的技术，可以把类型作为参数传入函数。而C是一门古老的语言，并没有相对应的技术。但是C中有一个指针类型，存储变量的地址。这个地址对所有的类型是通用的。因此">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准C下的泛型技术">
+<meta property="og:url" content="http://bravesnow.com/2014/11/03/标准C下的泛型技术/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="所谓泛型，就是与类型无关。现在许多的流行语言都是强类型（不同类型通常不能相互操作），比如C、C++、Java等。这样的好处就是一些错误可以在编译的时候检测出来。但是，对于多种类型功能类似的函数，需要写多个类型对应的版本。在C++、Java都有相对应的技术，可以把类型作为参数传入函数。而C是一门古老的语言，并没有相对应的技术。但是C中有一个指针类型，存储变量的地址。这个地址对所有的类型是通用的。因此">
+<meta property="og:updated_time" content="2014-11-06T10:00:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准C下的泛型技术">
+<meta name="twitter:description" content="所谓泛型，就是与类型无关。现在许多的流行语言都是强类型（不同类型通常不能相互操作），比如C、C++、Java等。这样的好处就是一些错误可以在编译的时候检测出来。但是，对于多种类型功能类似的函数，需要写多个类型对应的版本。在C++、Java都有相对应的技术，可以把类型作为参数传入函数。而C是一门古老的语言，并没有相对应的技术。但是C中有一个指针类型，存储变量的地址。这个地址对所有的类型是通用的。因此">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/03/标准C下的泛型技术/">
+  <time datetime="2014-11-03T13:34:47.000Z">
+    11月 3 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">标准C下的泛型技术</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>所谓泛型，就是与类型无关。<br>现在许多的流行语言都是强类型（不同类型通常不能相互操作），比如C、C++、Java等。<br>这样的好处就是一些错误可以在编译的时候检测出来。<br>但是，对于多种类型功能类似的函数，需要写多个类型对应的版本。<br>在C++、Java都有相对应的技术，可以把类型作为参数传入函数。<br>而C是一门古老的语言，并没有相对应的技术。<br>但是C中有一个指针类型，存储变量的地址。这个地址对所有的类型是通用的。<br>因此只要对地址操作，就可以对相对应的类型操作。本文详细说明这种方法。<br><a id="more"></a><br><strong>void</strong><br>C标准化之后，新加一个类型为void，指代无类型。通常是在函数参数为空的时候使用。</p>
+<p><strong>void *</strong><br>加星*之后，则变成了指针，那么是什么指针呢，其指向的是void，所以指代任意类型的指针。<br>这个任意可以指基本类型，也可以是结构体，函数指针，甚至是指针。</p>
+<p><strong>可以将任意类型的指针赋值给void指针</strong><br>例如：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *ptr_v;</span><br><span class="line"><span class="keyword">int</span> *ptr_i;</span><br><span class="line">ptr_v = ptr_i;</span><br></pre></td></tr></table></figure></p>
+<p>不过反之<code>ptr_i = ptr_v;</code>却是出错。<br>可以这样理解，<code>int*</code>是<code>void*</code>，反之<code>void*</code>不一定是<code>int*</code>，也可能是<code>char*</code>等。<br>一般可以强制类型转换，如<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ptr_i = (<span class="keyword">int</span> *)ptr_v;</span><br></pre></td></tr></table></figure></p>
+<p><strong>函数通用指针参数</strong><br>有了以上的默认转换，我们在函数形参中，使用void *，可以实参可以是任意类型的指针。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">void</span> *a)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,*(<span class="keyword">int</span> *)a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>一些问题注意</strong></p>
+<ul>
+<li>不能对<code>void *ptr</code>做提领操作，比如*ptr则是错误的。</li>
+<li>标准C中，不能做指针运算，比如相减操作，通常可以使用<code>char *</code>转换。</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/c/">c</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

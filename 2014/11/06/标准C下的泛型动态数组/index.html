@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>标准C下的泛型动态数组 | 抒意</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="bravesnow">
+  
+  
+    <meta name="description" content="在使用C的时候，非常羡慕C++STL中的vector容器，本文试图以标准C来实现类似vector的功能。">
+  
+  <meta name="description" content="在使用C的时候，非常羡慕C++STL中的vector容器，本文试图以标准C来实现类似vector的功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准C下的泛型动态数组">
+<meta property="og:url" content="http://bravesnow.com/2014/11/06/标准C下的泛型动态数组/index.html">
+<meta property="og:site_name" content="抒意">
+<meta property="og:description" content="在使用C的时候，非常羡慕C++STL中的vector容器，本文试图以标准C来实现类似vector的功能。">
+<meta property="og:updated_time" content="2014-11-06T10:00:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准C下的泛型动态数组">
+<meta name="twitter:description" content="在使用C的时候，非常羡慕C++STL中的vector容器，本文试图以标准C来实现类似vector的功能。">
+  
+    <link rel="alternate" href="/atom.xml" title="抒意" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">抒意</a></h1>
+    <p><a href="/">专注技术五十年 ^-^</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/11/06/标准C下的泛型动态数组/">
+  <time datetime="2014-11-06T09:54:42.000Z">
+    11月 6 2014
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">标准C下的泛型动态数组</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在使用C的时候，非常羡慕C++STL中的vector容器，本文试图以标准C来实现类似vector的功能。<br><a id="more"></a><br><strong>样例测试</strong><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">3</span>, b = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">array_t</span> <span class="built_in">array</span>; <span class="comment">//定义一个数组对象</span></span><br><span class="line">array_init(&amp;<span class="built_in">array</span>); <span class="comment">//使用之前的初始化</span></span><br><span class="line">array_add(&amp;<span class="built_in">array</span>,&amp;a); <span class="comment">//尾部插入一个元素（注意是地址）</span></span><br><span class="line">array_insert(&amp;<span class="built_in">array</span>,<span class="number">0</span>,&amp;b); <span class="comment">//索引0处插入元素</span></span><br><span class="line">array_del(&amp;<span class="built_in">array</span>,<span class="number">0</span>); <span class="comment">//删除0处的元素</span></span><br><span class="line">array_destroy(&amp;<span class="built_in">array</span>); <span class="comment">//删除数组</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>array_t结构体</strong><br>三个成员，其一是一个void*类型的数组；其二是数组的长度；其三是数组已分配的地址数量。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="built_in">array</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> **<span class="built_in">array</span>;</span><br><span class="line">    <span class="keyword">int</span> len;</span><br><span class="line">    <span class="keyword">int</span> capacity;</span><br><span class="line">&#125; <span class="keyword">array_t</span>;</span><br></pre></td></tr></table></figure></p>
+<p><strong>动态数组接口一览</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* 初始化动态数组结构 */</span><br><span class="line">void array_init(array_t *parray);</span><br><span class="line">/* 释放动态数组 */</span><br><span class="line">void array_destroy(array_t *parray);</span><br><span class="line">/* 动态添加数据 */</span><br><span class="line">void array_add(array_t *parray, void *value);</span><br><span class="line">/* 给定索引添加数据 */ </span><br><span class="line">void array_insert(array_t *parray, int i, void *value);</span><br><span class="line">/* 删除给定索引的数据 */ </span><br><span class="line">void array_del(array_t *pa, int i);</span><br><span class="line">/* 遍历数组元素 */</span><br><span class="line">void array_travel(array_t array, void (*visit)(void *value));</span><br></pre></td></tr></table></figure></p>
+<p><strong>关键实现之泛型设计</strong><br>之前文章中，讲到在C中使用void<em>实现泛型。<br>因此为了使得此动态数组可以存入任意的数据类型，<br>在array_t结构体成员中，使用的一个指针数组，这个数组存入的是void</em>。<br>在插入元素的时候，都是插入一个指针元素，比如<code>int*a</code>，<br>因为<code>int*</code>可以直接转换为<code>void*</code>，所以可以直接插入。</p>
+<p><strong>关键实现之内存的分配</strong><br>本程序所采用的内存分配方案类似于vector。<br>主要使用的函数是<code>realloc</code><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">realloc</span><span class="params">(<span class="keyword">void</span> *mem_address, <span class="keyword">unsigned</span> <span class="keyword">int</span> newsize)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>每次对数组添加新的元素的时候，先检查是否有剩余空间。<br>如果有，就直接存入；否则就重新分配一块更大的空间，将原内存复制到新空间，在添加新元素。<br>新空间大小的策略是二倍的原空间加1。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pa-&gt;capacity &lt;= pa-&gt;len) &#123;</span><br><span class="line">    pa-&gt;capacity = <span class="number">2</span>*(pa-&gt;capacity)+<span class="number">1</span>; <span class="comment">/* 预分配内存策略 */</span> </span><br><span class="line">    pa-&gt;<span class="built_in">array</span> = <span class="built_in">realloc</span>(pa-&gt;<span class="built_in">array</span>, <span class="keyword">sizeof</span>(<span class="keyword">void</span>*)*pa-&gt;capacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>详细实现</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">/* 初始化动态数组结构 */ </span><br><span class="line">void array_init(array_t *parray)</span><br><span class="line">&#123;</span><br><span class="line">    parray-&gt;array = NULL;</span><br><span class="line">    parray-&gt;len = 0;</span><br><span class="line">    parray-&gt;capacity = 0;</span><br><span class="line">&#125;</span><br><span class="line">/* 释放动态数组 */ </span><br><span class="line">void array_destroy(array_t *parray)</span><br><span class="line">&#123;</span><br><span class="line">    if (parray-&gt;array) &#123;</span><br><span class="line">	free(parray-&gt;array);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void array_add(array_t *pa, void *value)</span><br><span class="line">&#123;</span><br><span class="line">    if (pa-&gt;capacity &lt;= pa-&gt;len) &#123;</span><br><span class="line">	pa-&gt;capacity = 2*(pa-&gt;capacity)+1; /* 预分配内存策略 */ </span><br><span class="line">	pa-&gt;array = realloc(pa-&gt;array, sizeof(void*)*pa-&gt;capacity);</span><br><span class="line">    &#125;</span><br><span class="line">    *(pa-&gt;array + pa-&gt;len) = value;</span><br><span class="line">    ++(pa-&gt;len);</span><br><span class="line">&#125;</span><br><span class="line">void array_insert(array_t *pa, int i, void *value)</span><br><span class="line">&#123;</span><br><span class="line">    if (pa-&gt;capacity &lt;= pa-&gt;len) &#123;</span><br><span class="line">	pa-&gt;capacity = 2*(pa-&gt;capacity)+1; /* 预分配内存策略 */ </span><br><span class="line">	pa-&gt;array = realloc(pa-&gt;array, sizeof(void*)*pa-&gt;capacity);</span><br><span class="line">    &#125;</span><br><span class="line">    if (i &gt; pa-&gt;len) &#123;</span><br><span class="line">	printf("index error!\n");</span><br><span class="line">	exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    int k = pa-&gt;len;</span><br><span class="line">    for (; k &gt; i; --k) &#123;</span><br><span class="line">	pa-&gt;array[k] = pa-&gt;array[k-1];</span><br><span class="line">    &#125;</span><br><span class="line">    pa-&gt;array[i] = value;</span><br><span class="line">    ++pa-&gt;len;</span><br><span class="line">&#125;</span><br><span class="line">void array_del(array_t *pa, int i)</span><br><span class="line">&#123;</span><br><span class="line">    if (i &gt;= pa-&gt;len) &#123;</span><br><span class="line">	printf("array overflow!\n");</span><br><span class="line">	exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    for (; i &lt; pa-&gt;len-1; ++i) &#123;</span><br><span class="line">	pa-&gt;array[i] = pa-&gt;array[i+1];</span><br><span class="line">    &#125;</span><br><span class="line">    --(pa-&gt;len);</span><br><span class="line">&#125;</span><br><span class="line">void array_travel(array_t array, void (*visit)(void *value))</span><br><span class="line">&#123;</span><br><span class="line">    for (int i = 0; i &lt; array.len; ++i) &#123;</span><br><span class="line">	visit(array.array[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/c/">c</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2016 <a href="/">bravesnow</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
